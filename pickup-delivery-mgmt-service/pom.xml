@@ -12,16 +12,12 @@
 		<relativePath />
 	</parent>
 
-	<artifactId>user-mgmt-service</artifactId>
+	<artifactId>pickup-delivery-mgmt-service</artifactId>
 
 
-	<name>user-mgmt-service</name>
+	<name>pickup-delivery-mgmt-service</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<dependencies>
 		<dependency>
