@@ -1,0 +1,49 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default-layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Customer Registration</title>
+</head>
+<th:block layout:fragment="bodyContent">
+	<!-- Contact Form Begin -->
+	
+	<div class="contact-form spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10">
+					<div class="contact__form__title">
+						<h2>Customer Registration</h2>
+					</div>
+				</div>
+			</div>
+
+			<form action="#">
+				<div class="row">
+					<div class="col-lg-6 col-md-6">
+						<input type="email" class="form-control" id="emailAddress" placeholder="Email Address"> 
+						<input type="password" class="form-control" id="password" placeholder="Password">
+						<input type="text" class="form-control" id="firstName" placeholder="First Name">
+						<input type="text" class="form-control" id="lasttName" placeholder="Last Name">
+						<input type="text" class="form-control" id="mobileNo" placeholder="Mobile No">
+					</div>
+					<div class="col-lg-6 mb-5">
+						<input type="text" id="addressLine1" placeholder="House No or Flat No">
+						<input type="text" id="addressLine2" placeholder="Street and Locality">
+						<input type="text" id="city" placeholder="City">
+						<input type="text" id="state" placeholder="State">
+						<input type="text" id="zip" placeholder="Zip">
+						<input type="text" id="country" placeholder="Country">
+					</div>
+				</div>
+				<div class="row justify-content-md-center">
+					<button type="submit" class="site-btn">Register</button>
+				</div>
+		</form>
+	</div>
+	</div>
+	<!-- Contact Form End -->
+</th:block>
+</html>

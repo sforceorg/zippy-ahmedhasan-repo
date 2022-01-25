@@ -11,6 +11,7 @@ public class ZippyCustomerApplication implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/home").setViewName("/zippy-home");
+		registry.addViewController("/register").setViewName("register-customer");
 	}
 
 	public static void main(String[] args) throws Exception {

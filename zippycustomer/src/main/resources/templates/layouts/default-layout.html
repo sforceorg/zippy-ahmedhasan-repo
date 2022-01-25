@@ -66,6 +66,8 @@
             </div>
             <div class="header__top__right__auth">
                 <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a href="@{~/register}"><i class="fa fa-user"></i> Register</a>
+                
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -112,14 +114,6 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
-                        	<!-- 
-                            <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                            </div>
-                             -->
                             <div class="header__top__right__language">
                                 <img th:src="@{~/static/img/language.png}" alt="">
                                 <div>English</div>
@@ -131,6 +125,9 @@
                             </div>
                             <div class="header__top__right__auth">
                                 <a href="#"><i class="fa fa-user"></i> Login</a>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a th:href="@{~/register}"><i class="fa fa-user"></i> Register</a>
                             </div>
                         </div>
                     </div>
@@ -206,28 +203,6 @@
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
-                        <!-- 
-                        <div class="hero__search__phone">
-                            <div class="hero__search__phone__icon">
-                                <i class="fa fa-phone"></i>
-                            </div>
-                            <div class="hero__search__phone__text">
-                                <h5>+65 11.188.888</h5>
-                                <span>support 24/7 time</span>
-                            </div>
-                        </div>
-                         -->
-                    </div>
-                    <!-- 
-                    <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
-                        <div class="hero__text">
-                            <span>FRUIT FRESH</span>
-                            <h2>Vegetable <br />100% Organic</h2>
-                            <p>Free Pickup and Delivery Available</p>
-                            <a href="#" class="primary-btn">SHOP NOW</a>
-                        </div>
-                    </div>
-                     -->
                 </div>
             </div>
         </div>
@@ -272,25 +247,12 @@
 
    
    
-   <!-- Featured Section Begin -->
-     <th:block layout:fragment="featuredSection">
+   <!-- Body Content Begin -->
+     <th:block layout:fragment="bodyContent">
 	            	&nbsp;
 	   </th:block>	         
-   <!-- Featured Section End -->
+   <!-- Body Content End -->
    
-   <!-- Banner Begin -->
-     <th:block layout:fragment="latestProductsBanner">
-	            	&nbsp;
-	   </th:block>	         
-	<!-- Banner End -->
-	
-	<!-- Latest Product Section Begin -->
-      <th:block layout:fragment="latestProductsSection">
-	            	&nbsp;
-	   </th:block>	          
-	 <!-- Latest Product Section End -->
-	
-	   
 
     <!-- Footer Section Begin -->
     <footer class="footer spad">
@@ -330,14 +292,6 @@
                             <input type="text" placeholder="Enter your mail">
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
-                        <!-- 
-                        <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                         -->
                     </div>
                 </div>
             </div>
