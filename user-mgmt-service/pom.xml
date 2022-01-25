@@ -16,8 +16,7 @@
 
 
 	<name>user-mgmt-service</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
+	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -127,5 +126,12 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 </project>
