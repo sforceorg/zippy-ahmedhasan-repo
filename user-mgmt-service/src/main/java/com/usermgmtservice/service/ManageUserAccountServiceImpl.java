@@ -5,6 +5,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,11 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	
+	@Autowired 
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	 
 
 	@Transactional(readOnly = false)
 	public long registerCustomer(UserAccountDto customerDto) {
@@ -77,6 +83,7 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		 * constants
 		 */
 		
+		systemUser.setPassword(bCryptPasswordEncoder.encode(systemUser.getPassword()));
 		systemUser
 				.setEmailVerificationOtpCode(RandomGenerator.generateEmailOtpCode(EMAIL_VERIFICATION_OTP_CODE_LENGTH));
 		systemUser.setMobileNoOtpCode(RandomGenerator.generateMobileOtpCode(MOBILE_VERIFICATION_OTP_CODE_LENGTH));

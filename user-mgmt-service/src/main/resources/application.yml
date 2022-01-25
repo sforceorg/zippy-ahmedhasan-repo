@@ -9,3 +9,10 @@ spring:
   jpa:
     generate-ddl: false
     show-sql: true
+usermgmtservice:
+  api:
+    security:
+      username: zippyuser
+      password: "$2a$10$ao9M1pLRtM06lPpRzU1SuOoVeESDiCOD/npBkFyesZN8i2P7t.F.y"
+      #password: welcome1
+      csrf: false

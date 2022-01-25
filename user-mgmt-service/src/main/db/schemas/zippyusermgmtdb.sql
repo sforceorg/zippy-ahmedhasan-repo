@@ -53,7 +53,7 @@ CREATE TABLE `system_user` (
   `mobile_nbr` varchar(13) NOT NULL,
   `first_nm` varchar(50) DEFAULT NULL,
   `last_nm` varchar(50) DEFAULT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(60) NOT NULL,
   `email_verification_otp_code` varchar(12) NOT NULL,
   `mobile_nbr_otp_code` varchar(6) NOT NULL,
   `email_verification_otp_code_generated_dt` datetime NOT NULL,
