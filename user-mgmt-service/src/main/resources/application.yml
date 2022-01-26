@@ -9,6 +9,9 @@ spring:
   jpa:
     generate-ddl: false
     show-sql: true
+springdoc:
+  api-docs:
+    enabled: true    
 usermgmtservice:
   api:
     security:
