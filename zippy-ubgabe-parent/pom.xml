@@ -29,7 +29,7 @@
 		<springdoc.openapi.version>1.6.4</springdoc.openapi.version>
 		<spring.boot.version>2.6.2</spring.boot.version>
 		<thymeleaf.layout.dialect>3.0.0</thymeleaf.layout.dialect>
-		<hibernate.validator>7.0.2.Final</hibernate.validator>
+		<hibernate.validator>6.0.0.Final</hibernate.validator>
 		<javax.validation.api>2.0.1.Final</javax.validation.api>
 		<thymeleaf.extras.springsecurity5>3.0.4.RELEASE</thymeleaf.extras.springsecurity5>
 	</properties>
