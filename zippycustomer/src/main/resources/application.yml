@@ -3,3 +3,9 @@ server:
 spring:
   mvc:
     static-path-pattern: /static/**
+  messages:
+    basename: errors
+usermgmtservice:
+  apiUrl: http://localhost:9090/
+  apiKey: zippyuser
+  apiPassword: welcome1

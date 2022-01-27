@@ -20,22 +20,42 @@
 				</div>
 			</div>
 
-			<form action="#">
+			<form method="post" th:action="@{/customer/register}" th:object="${customerRegistrationForm}">
 				<div class="row">
 					<div class="col-lg-6 col-md-6">
-						<input type="email" class="form-control" id="emailAddress" placeholder="Email Address"> 
-						<input type="password" class="form-control" id="password" placeholder="Password">
-						<input type="text" class="form-control" id="firstName" placeholder="First Name">
-						<input type="text" class="form-control" id="lasttName" placeholder="Last Name">
-						<input type="text" class="form-control" id="mobileNo" placeholder="Mobile No">
+						<input type="email" class="form-control" name="emailAddress" placeholder="Email Address" th:field="*{emailAddress}">
+						<p class="text-danger" th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}">Invalid Email Address</p>
+						
+						<input type="password" class="form-control" name="password" placeholder="Password" th:field=*{password}>
+						<p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Blank Password</p>
+						
+						<input type="text" class="form-control" name="firstName" placeholder="First Name" th:field=*{firstName}>
+						<p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name is blank</p>
+						
+						<input type="text" class="form-control" name="lastName" placeholder="Last Name" th:field="*{lastName}">
+						<p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name is blank</p>
+						
+						<input type="text" class="form-control" name="mobileNo" placeholder="Mobile No" th:field="*{mobileNo}">
+						<p class="text-danger" th:if="${#fields.hasErrors('mobileNo')}" th:errors="*{mobileNo}">Mobile No is lank</p>
+						
 					</div>
 					<div class="col-lg-6 mb-5">
-						<input type="text" id="addressLine1" placeholder="House No or Flat No">
-						<input type="text" id="addressLine2" placeholder="Street and Locality">
-						<input type="text" id="city" placeholder="City">
-						<input type="text" id="state" placeholder="State">
-						<input type="text" id="zip" placeholder="Zip">
-						<input type="text" id="country" placeholder="Country">
+						<input type="text" name="addressLine1" placeholder="House No or Flat No" th:field="*{addressLine1}">
+						<p class="text-danger" th:if="${#fields.hasErrors('addressLine1')}" th:errors="*{addressLine1}">House/Flat No</p>
+						
+						<input type="text" name="addressLine2" placeholder="Street and Locality" th:field="*{addressLine2}">
+						
+						<input type="text" name="city" placeholder="City" th:field="*{city}">
+						<p class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City is blank</p>
+						
+						<input type="text" name="state" placeholder="State" th:field="*{state}">
+						<p class="text-danger" th:if="${#fields.hasErrors('state')}" th:errors="*{state}">State is blank</p>
+						
+						<input type="text" name="zip" placeholder="Zip" th:field="*{zip}">
+						<p class="text-danger" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}">Zip is blank</p>
+						
+						<input type="text" name="country" placeholder="Country" th:field="*{country}">
+						<p class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country is Blank</p>
 					</div>
 				</div>
 				<div class="row justify-content-md-center">
