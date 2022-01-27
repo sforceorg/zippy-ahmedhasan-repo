@@ -105,4 +105,16 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		return systemUser.getSystemUserId();
 	}
 
+
+	@Override
+	public long countUserAccountByEmailAddress(String emailAddress) {
+		return this.systemUserRepository.countByEmailAddress(emailAddress);
+	}
+
+
+	@Override
+	public long countUserAccountByMobileNo(String mobileNo) {
+		return this.systemUserRepository.countByMobileNo(mobileNo);
+	}
+
 }
