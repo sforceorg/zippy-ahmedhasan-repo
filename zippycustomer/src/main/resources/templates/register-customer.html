@@ -15,7 +15,7 @@
 			<div class="row">
 				<div class="col-lg-10">
 					<div class="contact__form__title">
-						<h2>Customer Registration</h2>
+						<h5>Customer Registration</h5>
 					</div>
 				</div>
 			</div>
@@ -28,6 +28,9 @@
 						
 						<input type="password" class="form-control" name="password" placeholder="Password" th:field=*{password}>
 						<p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Blank Password</p>
+						
+						<input type="password" class="form-control" name="repassword" placeholder="RePassword" th:field=*{rePassword}>
+						<p class="text-danger" th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}">Blank RePassword</p>
 						
 						<input type="text" class="form-control" name="firstName" placeholder="First Name" th:field=*{firstName}>
 						<p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name is blank</p>

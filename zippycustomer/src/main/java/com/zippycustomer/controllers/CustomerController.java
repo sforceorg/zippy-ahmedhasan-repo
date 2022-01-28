@@ -1,6 +1,5 @@
 package com.zippycustomer.controllers;
 
-import java.security.SecureRandom;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -8,6 +7,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +21,7 @@ import com.zippycustomer.form.CustomerRegistrationForm;
 import com.zippycustomer.usergmtservice.dto.AddressDto;
 import com.zippycustomer.usergmtservice.dto.UserAccountDto;
 import com.zippycustomer.usergmtservice.feign.UserAccountFeign;
+import com.zippycustomer.utils.CustomerRegistrationFormValidator;
 
 @Controller
 @RequestMapping("/customer")
@@ -29,6 +30,9 @@ public class CustomerController {
 
 	@Autowired
 	private UserAccountFeign userAccountFeign;
+	
+	@Autowired
+	private CustomerRegistrationFormValidator customerRegistrationFormValidator; 
 	
 	@GetMapping("/register")
 	public String showRegistrationPage(Model model) {
@@ -54,6 +58,35 @@ public class CustomerController {
 			logger.info("errors occured return to the same page");
 			return "register-customer";
 		}
+		
+		/**
+		 * Validate the customerRegisterationForm before calling the rest api
+		 */
+		logger.info("Validate the fields are correct or not");
+		this.customerRegistrationFormValidator.validate(form, bindingResult);
+		if (bindingResult.hasErrors()) {
+			logger.info("still there are some errors after validating the email,password, and mobile no");
+			return "register-customer"; 
+		}
+		
+		/**
+		 * Validate mobile no and email are already exists or not
+		 */
+		logger.info("Validate mobile no and email are already exists or not");
+		long emailCount = userAccountFeign.countEmailAddress(form.getEmailAddress());
+		if (emailCount!=0) {
+			bindingResult.rejectValue("emailAddress", "emailAddress.exists");
+			return "register-customer";
+		}
+		
+		long mobileCount = this.userAccountFeign.countMobileNo(form.getMobileNo());
+		if(mobileCount!=0) {
+			bindingResult.rejectValue("mobileNo","mobileNo.exits" );
+			return "register-customer";
+		}
+		
+		
+		
 		/**
 		 * Here create the AddressDto object
 		 */
@@ -77,6 +110,13 @@ public class CustomerController {
 		userAccountDto.setPassword(form.getPassword());
 		userAccountDto.setMobileNo(form.getMobileNo());
 		userAccountDto.setAddressDto(addressDto);
+		
+		
+		
+		
+		
+		
+		
 		
 		logger.info("calling the rest api registercuster");
 		long customerId = userAccountFeign.registerCustomer(userAccountDto);

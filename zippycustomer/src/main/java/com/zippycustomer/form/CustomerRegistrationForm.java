@@ -14,6 +14,8 @@ public class CustomerRegistrationForm {
 	@NotBlank
 	protected String password;
 	@NotBlank
+	protected String rePassword;
+	@NotBlank
 	protected String firstName;
 	@NotBlank
 	protected String lastName;

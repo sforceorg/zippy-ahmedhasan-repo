@@ -11,7 +11,6 @@ public class UserAccountFeignConfig {
 
 	@Bean
 	public BasicAuthRequestInterceptor basicAuthRequestInterceptor(@Value("${usermgmtservice.apiKey}") String apiKey,@Value("${usermgmtservice.apiPassword}") String apiPassword) {
-		System.out.println("key : "+ apiKey + ", and password :"+apiPassword);
 		return new BasicAuthRequestInterceptor(apiKey, apiPassword);
 	}
 }
