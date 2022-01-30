@@ -1,4 +1,4 @@
-package com.zippycustomer.usergmtservice.feign;
+package com.zippycustomer.service.customer;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.zippycustomer.usergmtservice.dto.UserAccountDto;
 import com.zippycustomer.usergmtservice.feign.config.UserAccountFeignConfig;
 
-@FeignClient(name="userAccountService" , url = "${usermgmtservice.apiUrl}", configuration = UserAccountFeignConfig.class)
-public interface UserAccountFeign {
+@FeignClient(name="userAccountService" , url = "${usermgmtservice.apiUrl}/account", configuration = UserAccountFeignConfig.class)
+public interface UserAccountApiService {
 
-	@PostMapping(value = "/customer/new", consumes = { MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
+	@PostMapping(value = "/new/customer", consumes = { MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
 	public long registerCustomer(@RequestBody UserAccountDto userAccountDto);
 	
-	@GetMapping(value = "/customer/count/emailAddress")
+	@GetMapping(value = "/count/emailAddress")
 	public long countEmailAddress(@RequestParam("emailAddress") String emailAddress);
 	
-	@GetMapping(value = "/customer/count/mobileNo")
+	@GetMapping(value = "/count/mobileNo")
 	public long countMobileNo(@RequestParam("mobileNo") String mobileNo);
 }

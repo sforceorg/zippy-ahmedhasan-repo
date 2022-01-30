@@ -6,6 +6,6 @@ spring:
   messages:
     basename: errors
 usermgmtservice:
-  apiUrl: http://localhost:9090/
+  apiUrl: http://localhost:9090
   apiKey: zippyuser
   apiPassword: welcome1

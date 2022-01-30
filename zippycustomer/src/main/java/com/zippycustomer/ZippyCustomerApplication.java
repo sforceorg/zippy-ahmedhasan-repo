@@ -18,6 +18,7 @@ public class ZippyCustomerApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(ZippyCustomerApplication.class, args);
+		System.out.println("the apis has been modified");
 	}
 
 }

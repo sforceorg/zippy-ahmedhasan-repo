@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zippycustomer.form.CustomerRegistrationForm;
+import com.zippycustomer.service.customer.UserAccountApiService;
 import com.zippycustomer.usergmtservice.dto.AddressDto;
 import com.zippycustomer.usergmtservice.dto.UserAccountDto;
-import com.zippycustomer.usergmtservice.feign.UserAccountFeign;
 import com.zippycustomer.utils.CustomerRegistrationFormValidator;
 
 @Controller
@@ -28,7 +28,7 @@ public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	@Autowired
-	private UserAccountFeign userAccountFeign;
+	private UserAccountApiService userAccountApiService;
 	
 	@Autowired
 	private CustomerRegistrationFormValidator customerRegistrationFormValidator; 
@@ -72,13 +72,13 @@ public class CustomerController {
 		 * Validate mobile no and email are already exists or not
 		 */
 		logger.info("Validate mobile no and email are already exists or not");
-		long emailCount = userAccountFeign.countEmailAddress(form.getEmailAddress());
+		long emailCount = userAccountApiService.countEmailAddress(form.getEmailAddress());
 		if (emailCount!=0) {
 			bindingResult.rejectValue("emailAddress", "emailAddress.exists");
 			return "register-customer";
 		}
 		
-		long mobileCount = this.userAccountFeign.countMobileNo(form.getMobileNo());
+		long mobileCount = this.userAccountApiService.countMobileNo(form.getMobileNo());
 		if(mobileCount!=0) {
 			bindingResult.rejectValue("mobileNo","mobileNo.exits" );
 			return "register-customer";
@@ -111,7 +111,7 @@ public class CustomerController {
 		userAccountDto.setAddressDto(addressDto);
 		
 		logger.info("calling the rest api registercuster");
-		long customerId = userAccountFeign.registerCustomer(userAccountDto);
+		long customerId = userAccountApiService.registerCustomer(userAccountDto);
 		logger.info("rest api has been called successfully");
 		logger.info("customer information : "+form.toString());
 		//int customerId = new SecureRandom().nextInt(1000);

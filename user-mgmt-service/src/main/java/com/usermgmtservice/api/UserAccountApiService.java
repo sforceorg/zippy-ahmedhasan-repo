@@ -48,8 +48,8 @@ import com.usermgmtservice.service.ManageUserAccountService;
  * @author ahmed
  */
 @RestController
-@RequestMapping("/customer")
-public class ManageUserAccountApiController{
+@RequestMapping("/account")
+public class UserAccountApiService{
 
 	@Autowired
 	private ManageUserAccountService manageUserAccountService;
@@ -59,7 +59,7 @@ public class ManageUserAccountApiController{
 	 * @param userAccountDto
 	 * @return 
 	 */
-	@PostMapping(value = "/new", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
+	@PostMapping(value = "/new/customer", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<String> registerCustomer(@RequestBody UserAccountDto userAccountDto) {
 		long systemUserId = this.manageUserAccountService.registerCustomer(userAccountDto);
