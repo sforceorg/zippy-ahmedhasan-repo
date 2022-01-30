@@ -67,6 +67,8 @@ CREATE TABLE `system_user` (
   `created_dt` datetime NOT NULL,
   `last_modified_by` varchar(50) NOT NULL,
   `last_modified_dt` datetime NOT NULL,
+  `mobile_otp_verification_code_cerified_status` tinyint(1) NOT NULL DEFAULT b'0',
+  `email_verification_code_verified_status` tinyint(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`system_user_id`),
   UNIQUE KEY `email_address_UNIQUE` (`email_address`),
   UNIQUE KEY `mobile_nbr_UNIQUE` (`mobile_nbr`),
