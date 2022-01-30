@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author ahmed
+ */
 @SpringBootApplication
 public class UserMgmtApplication implements WebMvcConfigurer {
 	private static final Logger logger = LoggerFactory.getLogger(UserMgmtApplication.class);

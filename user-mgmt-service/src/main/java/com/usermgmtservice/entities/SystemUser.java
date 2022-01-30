@@ -40,6 +40,10 @@ public class SystemUser implements Serializable{
 	protected Date emailVerificationOtpCodeGeneratedDate;
 	@Column(name = "mobile_nbr_otp_code_generated_dt")
 	protected Date mobileNoOtpCodeGeneratedDate;
+	@Column(name = "mobile_otp_verification_code_cerified_status")
+	protected int mobileOtpVerificationCodeVerifiedStatus;
+	@Column(name="email_verification_code_verified_status")
+	protected int emailVerificationCodeVerifiedStatus;
 	protected String status;
 	@Column(name = "registered_dt")
 	protected Date registeredDate;
