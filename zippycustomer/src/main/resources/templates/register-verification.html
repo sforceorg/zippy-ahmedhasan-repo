@@ -17,10 +17,28 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="row">
 				<div class="col-lg-10">
 					<div class="contact__form__title">
-						customer registered successfully with customer id <span th:text="${customerId}"></span>
+						<form method="post" th:action="@{/customer/verifyOtp}" th:object="${verifyOtpCodeForm}">
+							<div class="row">
+								<div class="col-lg-12 col-md-12">
+									Dear&nbsp;<b th:text="*{fullName}"/>, your account has been created, sms contains otp code sent to your mobile no :<b th:text="*{maskedMobileNo}"/> and activation email to  <b th:text="*{maskedEmailAddress}"/>
+									<p class="text-danger" th:if="${#fields.hasErrors('global')}" th:errors="*{global}">Incorrect data</p>
+								</div>
+							</div>
+							<div class="row justify-content-md-center">
+								<div class="col-lg-6 col-md-6 justify-content-md-center">
+									<input type="hidden" class="form-control" name="userAccountId" th:field="*{userAccountId}">
+									<input type="text" class="form-control" name="otpCode" placeholder="Otp Code" th:field="*{otpCode}">
+									<p class="text-danger" th:if="${#fields.hasErrors('otpCode')}" th:errors="*{otpCode}">Invalid OTP Code</p>
+								</div>
+							</div>
+							<div class="row justify-content-md-center">
+								<button type="submit" class="site-btn">Verify</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>

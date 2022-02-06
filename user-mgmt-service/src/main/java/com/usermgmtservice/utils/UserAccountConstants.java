@@ -19,5 +19,7 @@ public interface UserAccountConstants {
 	 int VERIFIED_STATUS=1;
 	 String MOBILE_VERIFICATION_TYPE = "mobile";
 	 String EMAIL_VERIFICATION_TYPE = "email";
+	 
+	 
 	
 }

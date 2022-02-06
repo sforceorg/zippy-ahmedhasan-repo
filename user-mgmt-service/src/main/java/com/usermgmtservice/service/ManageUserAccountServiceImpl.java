@@ -6,9 +6,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.usermgmtservice.dto.AddressDto;
 import com.usermgmtservice.dto.UserAccountActivationStatusDto;
 import com.usermgmtservice.dto.UserAccountDto;
@@ -197,5 +201,15 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		logger.info("The record has been successfully updated");
 		
 		return userAccountActivationStatusDto;
+	}
+
+
+	@Override
+	public UserAccountDto getUserAccount(@PathVariable long userAccountId) {
+		SystemUser systemUser = null;
+		UserAccountDto userAccountDto = null;
+		systemUser = this.systemUserRepository.getById(userAccountId);
+		userAccountDto = Mapper.mapSystemUserToUserAccountDto(systemUser);
+		return userAccountDto;
 	}
 }

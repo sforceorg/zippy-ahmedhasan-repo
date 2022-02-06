@@ -1,11 +1,9 @@
 package com.usermgmtservice.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +23,13 @@ import com.usermgmtservice.exceptions.UserAccountAlreadyActivatedException;
 import com.usermgmtservice.exceptions.UserAccountNotFoundException;
 import com.usermgmtservice.service.ManageUserAccountService;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 /**
- you can send request using the below using POST method : http://localhost:9090/customer/new
+ you can send request using the below using POST method : http://localhost:9090/account/new/customer
  {
     "firstName": "David",
     "lastName": "Paul",
@@ -49,7 +52,15 @@ import com.usermgmtservice.service.ManageUserAccountService;
  */
 @RestController
 @RequestMapping("/account")
-public class UserAccountApiService{
+public class UserAccountApiService {
+
+	private static final String APPLICATION_JSON_MEDIA_TYPE = "application/json";
+	private static final String HTTP_STATUS_NOT_FOUND = "404";
+	private static final String HTTP_STATUS_TOO_MANY_REQUESTS = "429";
+	private static final String HTTP_STATUS_ALREADY_REPROTED = "208";
+	private static final String HTTP_STATUS_BAD_REQUEST = "400";
+	private static final String HTTP_STATUS_NOT_ACCEPTABLE = "406";
+	private static final String HTTP_STATUS_OK_SUCCESS= "200";
 
 	@Autowired
 	private ManageUserAccountService manageUserAccountService;
@@ -57,7 +68,7 @@ public class UserAccountApiService{
 	/**
 	 * 
 	 * @param userAccountDto
-	 * @return 
+	 * @return
 	 */
 	@PostMapping(value = "/new/customer", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
@@ -67,69 +78,100 @@ public class UserAccountApiService{
 	}
 
 	/**
-	 * you can send get request http://localhost:9090/customer/count/emailAddress?emailAddress=test@gmail.com
+	 * you can send get request
+	 * http://localhost:9090/customer/count/emailAddress?emailAddress=test@gmail.com
+	 * 
 	 * @param emailAddress
 	 * @return
 	 */
-	@GetMapping(value = "/count/emailAddress",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Long> getUserAccountByEmailAddress(@RequestParam("emailAddress") String emailAddress){
+	@GetMapping(value = "/count/emailAddress", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Long> getUserAccountByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
 		return ResponseEntity.ok(this.manageUserAccountService.countUserAccountByEmailAddress(emailAddress));
 	}
+
 	/**
-	 * you can send get request http://localhost:9090/customer/count/mobileNo?mobileNo=99999
+	 * you can send get request
+	 * http://localhost:9090/customer/count/mobileNo?mobileNo=99999
+	 * 
 	 * @param mobileNo
 	 * @return
 	 */
-	@GetMapping(value = "/count/mobileNo" , produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Long> getUserAccountByMobileNo(String mobileNo){
+	@GetMapping(value = "/count/mobileNo", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Long> getUserAccountByMobileNo(String mobileNo) {
 		return ResponseEntity.ok(this.manageUserAccountService.countUserAccountByMobileNo(mobileNo));
 	}
-	
+
 	/**
-	 * TODO We are handling the exceptions here, however it is highly recommended to replace them with global handler 
-	 * in separate class  
+	 * TODO We are handling the exceptions here, however it is highly recommended to
+	 * replace them with global handler in separate class
 	 */
-	
+
 	@PostMapping(value = "/verify/{accountId}/{verificationCode}/{verificationType}")
-	public ResponseEntity<UserAccountActivationStatusDto> verifyOtpAndUpdateAccountStatus(@PathVariable("accountId") long accountId,@PathVariable("verificationCode") String verificationCode,@PathVariable("verificationType") String verificationType) throws UserAccountNotFoundException, OtpMismatchException, UserAccountAlreadyActivatedException, OtpAlreadyVerifiedException, UnknownVerificationTypeException{
-		System.out.println("I am handling the errors.... no value");
-		return ResponseEntity.ok(this.manageUserAccountService.verifyOtpAndUpdateAccountStatus(accountId, verificationCode, verificationType));
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = HTTP_STATUS_NOT_FOUND, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) }),
+			@ApiResponse(responseCode = HTTP_STATUS_ALREADY_REPROTED, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) }),
+			@ApiResponse(responseCode = HTTP_STATUS_NOT_ACCEPTABLE, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) }),
+			@ApiResponse(responseCode = HTTP_STATUS_BAD_REQUEST, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) }),
+			@ApiResponse(responseCode = HTTP_STATUS_TOO_MANY_REQUESTS, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) }),
+			@ApiResponse(responseCode = HTTP_STATUS_OK_SUCCESS, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { UserAccountActivationStatusDto.class })) })})
+	public ResponseEntity<UserAccountActivationStatusDto> verifyOtpAndUpdateAccountStatus(
+			@PathVariable("accountId") long accountId, @PathVariable("verificationCode") String verificationCode,
+			@PathVariable("verificationType") String verificationType)
+			throws UserAccountNotFoundException, OtpMismatchException, UserAccountAlreadyActivatedException,
+			OtpAlreadyVerifiedException, UnknownVerificationTypeException {
+		
+		return ResponseEntity.ok(this.manageUserAccountService.verifyOtpAndUpdateAccountStatus(accountId,
+				verificationCode, verificationType));
 	}
-	
-	
+
 	@ExceptionHandler(UserAccountNotFoundException.class)
-	public ResponseEntity<ErrorInfoDto> handleUserAccountNotFoundException(UserAccountNotFoundException e){
+	public ResponseEntity<ErrorInfoDto> handleUserAccountNotFoundException(UserAccountNotFoundException e) {
 		System.out.println("handleUserAccountNotFoundException has been called");
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getErrorInfoDto());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getErrorInfoDto());
 	}
-	
+
 	@ExceptionHandler(OtpAlreadyVerifiedException.class)
-	public ResponseEntity<ErrorInfoDto> handleOtpAreadyVerifiedException(OtpAlreadyVerifiedException e){
-		return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(e.getErrorInfoDto()); 
+	public ResponseEntity<ErrorInfoDto> handleOtpAreadyVerifiedException(OtpAlreadyVerifiedException e) {
+		return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(e.getErrorInfoDto());
 	}
-	
+
 	@ExceptionHandler(UserAccountAlreadyActivatedException.class)
-	public ResponseEntity<ErrorInfoDto> handleUserAccountAlreadyActivatedException(UserAccountAlreadyActivatedException e){
+	public ResponseEntity<ErrorInfoDto> handleUserAccountAlreadyActivatedException(
+			UserAccountAlreadyActivatedException e) {
 		return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(e.getErrorInfoDto());
 	}
-	
+
 	@ExceptionHandler(OtpMismatchException.class)
-	public ResponseEntity<ErrorInfoDto> handleOtpMismatchException(OtpMismatchException e){
-		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getErrorInfoDto());
-	}
-	
-	@ExceptionHandler(UnknownVerificationTypeException.class)
-	public ResponseEntity<ErrorInfoDto> handle(UnknownVerificationTypeException e){
+	public ResponseEntity<ErrorInfoDto> handleOtpMismatchException(OtpMismatchException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getErrorInfoDto());
 	}
+
+	@ExceptionHandler(UnknownVerificationTypeException.class)
+	public ResponseEntity<ErrorInfoDto> handle(UnknownVerificationTypeException e) {
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getErrorInfoDto());
+	}
+
 	/**
-	 * TODO this method has been written as a workaround and should be replaced correctly
+	 * TODO this method has been written as a workaround and should be replaced
+	 * correctly
+	 * 
 	 * @param e
 	 * @return
 	 */
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<String> handle(DataIntegrityViolationException e){
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	}
+	/*
+	 * @ExceptionHandler(DataIntegrityViolationException.class) public
+	 * ResponseEntity<String> handle(DataIntegrityViolationException e) { return
+	 * ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); }
+	 */
 	
+	@GetMapping(value = "/{userAccountId}" , produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<UserAccountDto> getUserAccount(@PathVariable("userAccountId") long userAccountId){
+		return ResponseEntity.ok(this.manageUserAccountService.getUserAccount(userAccountId));
+	}
 }

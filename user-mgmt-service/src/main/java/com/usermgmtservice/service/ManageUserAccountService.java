@@ -18,4 +18,6 @@ public interface ManageUserAccountService {
 	public UserAccountActivationStatusDto verifyOtpAndUpdateAccountStatus(long systemUserId, String verificationCode,
 			String verificationType) throws UserAccountNotFoundException, OtpMismatchException,
 			UserAccountAlreadyActivatedException, OtpAlreadyVerifiedException, UnknownVerificationTypeException;
+	
+	public UserAccountDto getUserAccount(long userAccountId);
 }

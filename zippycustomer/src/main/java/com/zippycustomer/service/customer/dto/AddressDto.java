@@ -1,4 +1,4 @@
-package com.zippycustomer.usergmtservice.dto;
+package com.zippycustomer.service.customer.dto;
 
 import lombok.Data;
 

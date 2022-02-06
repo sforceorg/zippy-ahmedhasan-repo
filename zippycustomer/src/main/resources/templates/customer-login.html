@@ -1,0 +1,62 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default-layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Customer Login</title>
+</head>
+<th:block layout:fragment="bodyContent">
+	<!-- Contact Form Begin -->
+	
+	<div class="contact-form spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10">
+					<div class="contact__form__title">
+						<h5>Customer Login</h5>
+					</div>
+				</div>
+			</div>
+
+			<form method="post" th:action="@{/customer/doLogin}" id="loginForm">
+				<p class="text-danger" style="text-align: center;" th:if="${param.error == 'L'}" >Error account locked</p>
+				
+				<div class="row justify-content-md-center">
+					<div class="col-lg-6 col-md-6">
+						<input type="email" class="form-control" name="emailAddress" placeholder="Email Address" id="emailAddress">
+						<p class="text-danger" id="emailAddressError"></p>
+						<input type="password" class="form-control" name="password" placeholder="Password" id="password">
+						<p class="text-danger" id="passwordError"></p>
+					</div>
+				</div>
+				<div class="row justify-content-md-center">
+					<button type="submit" class="site-btn" id="loginButton">Login</button>
+				</div>
+		</form>
+	</div>
+	</div>
+	<!-- Contact Form End -->
+	<script th:inline="javascript">
+		$(document).ready(function(){
+			$("#loginForm").submit(function(event) {
+				var hasError = false;
+				
+				if($("#emailAddress").val().trim()==''){
+					$("#emailAddressError").text("EmailAddress is blank");
+					hasError = true;
+				}
+				if($("#password").val().trim()==''){
+					$("#passwordError").text("password is blank");
+					hasError = true;
+				}
+				if(hasError == true){
+					event.preventDefault();
+				}
+				
+			});
+		});
+	</script>
+</th:block>
+</html>

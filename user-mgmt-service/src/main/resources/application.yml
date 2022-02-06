@@ -11,7 +11,10 @@ spring:
     show-sql: true
 springdoc:
   api-docs:
-    enabled: true    
+    enabled: true
+    path: /apidoc
+  swagger-ui:
+    path: /swaggerui.html 
 usermgmtservice:
   api:
     security:

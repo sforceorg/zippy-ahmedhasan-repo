@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @EqualsAndHashCode
 public class UserAccountDto {
+	private long userAccountId;
 	private String firstName;
 	private String lastName;
 	private String emailAddress;

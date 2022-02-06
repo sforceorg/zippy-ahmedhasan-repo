@@ -13,12 +13,13 @@ public class ZippyCustomerApplication implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/home").setViewName("/zippy-home");
-		registry.addViewController("/register").setViewName("register-customer");
+		//registry.addViewController("/register").setViewName("register-customer");
+		registry.addViewController("/login").setViewName("customer-login");
 	}
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(ZippyCustomerApplication.class, args);
-		System.out.println("the apis has been modified");
+		//System.out.println("the apis has been modified>>>");
 	}
 
 }

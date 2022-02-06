@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.zippycustomer.form.CustomerRegistrationForm;
-import com.zippycustomer.usergmtservice.dto.UserAccountDto;
+import com.zippycustomer.service.customer.dto.UserAccountDto;
 
 /**
  * 

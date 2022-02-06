@@ -28,5 +28,29 @@ public class Mapper {
 		address.setCountry(addressDto.getCountry());
 		return address;
 	}
+	
+	public static UserAccountDto mapSystemUserToUserAccountDto(SystemUser systemUser) {
+		UserAccountDto userAccountDto = null;
+		AddressDto addressDto = null;
+		
+		addressDto = new AddressDto();
+		addressDto.setAddressLine1(systemUser.getAddress().getAddressLine1());
+		addressDto.setAddressLine2(systemUser.getAddress().getAddressLine2());
+		addressDto.setCity(systemUser.getAddress().getCity());
+		addressDto.setState(systemUser.getAddress().getState());
+		addressDto.setZip(systemUser.getAddress().getZip());
+		addressDto.setCountry(systemUser.getAddress().getCountry());
+		
+		
+		userAccountDto = new UserAccountDto();
+		userAccountDto.setUserAccountId(systemUser.getSystemUserId());
+		userAccountDto.setFirstName(systemUser.getFirstName());
+		userAccountDto.setLastName(systemUser.getLastName());
+		userAccountDto.setMobileNo(systemUser.getMobileNo());
+		userAccountDto.setEmailAddress(systemUser.getEmailAddress());
+		userAccountDto.setAddressDto(addressDto);
+		
+		return userAccountDto;
+	}
 
 }
