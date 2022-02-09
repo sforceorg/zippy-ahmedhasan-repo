@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.partnerstoreservice.dto.CityDto;
 import com.partnerstoreservice.dto.ServiceAreaDto;
 import com.partnerstoreservice.dto.StateDto;
+import com.partnerstoreservice.dto.StoreDto;
 import com.partnerstoreservice.service.StoreManagementService;
 
 /**
@@ -39,5 +40,10 @@ public class StoreManagementApi {
 	@GetMapping(value = "/serviceAreas/{cityName}")
 	public List<ServiceAreaDto> getServiceAreas(@PathVariable("cityName") String cityName){
 		return this.storeManagementService.getServiceAreas(cityName);
+	}
+	
+	@GetMapping(value = "/stores/{serviceAreaId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public List<StoreDto> getStoresInServiceArea(@PathVariable("serviceAreaId") long serviceAreaId){
+		return this.storeManagementService.getStoresInServiceArea(serviceAreaId);
 	}
 }
