@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.zippycustomer.service.customer.dto.UserAccountActivationStatusDto;
-import com.zippycustomer.service.customer.dto.UserAccountDto;
+import com.zippycustomer.dto.customer.UserAccountActivationStatusDto;
+import com.zippycustomer.dto.customer.UserAccountDto;
 import com.zippycustomer.service.customer.exceptions.OtpAlreadyVerifiedException;
 import com.zippycustomer.service.customer.exceptions.OtpMismatchException;
 import com.zippycustomer.service.customer.exceptions.UnknownVerificationTypeException;
 import com.zippycustomer.service.customer.exceptions.UserAccountAlreadyActivatedException;
 import com.zippycustomer.service.customer.exceptions.UserAccountNotFoundException;
-import com.zippycustomer.usergmtservice.feign.config.UserAccountFeignConfig;
+import com.zippycustomer.usergmtservice.feign.config.customer.UserAccountFeignConfig;
 
 @FeignClient(name = "userAccountService", url = "${usermgmtservice.apiUrl}/account", configuration = UserAccountFeignConfig.class)
 public interface UserAccountApiService {
@@ -38,5 +38,9 @@ public interface UserAccountApiService {
 			OtpMismatchException, OtpAlreadyVerifiedException;
 	
 	@GetMapping(value = "/{userAccountId}")
-	public UserAccountDto getUserAccountDto(@PathVariable("userAccountId") long userAccountId); 
+	public UserAccountDto getUserAccountDto(@PathVariable("userAccountId") long userAccountId);
+
+	/**TODO this seems not working it has to be fixed */
+	@GetMapping(value = "/{emailAddress}")
+	public UserAccountDto getUserAccountDto(@PathVariable("emailAddress") String emailAddress) throws UserAccountNotFoundException; 
 }

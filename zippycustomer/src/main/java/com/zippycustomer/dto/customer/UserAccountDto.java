@@ -1,4 +1,6 @@
-package com.zippycustomer.service.customer.dto;
+package com.zippycustomer.dto.customer;
+
+import java.util.List;
 
 import lombok.Data;
 
@@ -9,5 +11,5 @@ public class UserAccountDto {
 	protected String firstName;
 	protected String lastName;
 	protected String mobileNo;
-	protected AddressDto addressDto;
+	protected List<AddressDto> addressDtos;
 }

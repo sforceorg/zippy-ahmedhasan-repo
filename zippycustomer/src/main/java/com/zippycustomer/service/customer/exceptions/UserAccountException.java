@@ -1,10 +1,6 @@
 package com.zippycustomer.service.customer.exceptions;
 
-/**
-* @author ahmed
-*/
-
-import com.zippycustomer.service.customer.dto.ErrorInfoDto;
+import com.zippycustomer.dto.customer.ErrorInfoDto;
 
 public class UserAccountException extends Exception {
 

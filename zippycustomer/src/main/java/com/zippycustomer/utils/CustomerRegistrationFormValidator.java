@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.zippycustomer.dto.customer.UserAccountDto;
 import com.zippycustomer.form.CustomerRegistrationForm;
-import com.zippycustomer.service.customer.dto.UserAccountDto;
 
 /**
  * 

@@ -1,5 +1,6 @@
 package com.zippycustomer.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,20 +18,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.zippycustomer.dto.customer.AddressDto;
+import com.zippycustomer.dto.customer.UserAccountActivationStatusDto;
+import com.zippycustomer.dto.customer.UserAccountDto;
 import com.zippycustomer.form.CustomerRegistrationForm;
 import com.zippycustomer.form.VerifyOtpCodeForm;
 import com.zippycustomer.service.customer.UserAccountApiService;
-import com.zippycustomer.service.customer.dto.AddressDto;
-import com.zippycustomer.service.customer.dto.UserAccountActivationStatusDto;
-import com.zippycustomer.service.customer.dto.UserAccountDto;
 import com.zippycustomer.service.customer.exceptions.OtpAlreadyVerifiedException;
 import com.zippycustomer.service.customer.exceptions.OtpMismatchException;
 import com.zippycustomer.service.customer.exceptions.UnknownVerificationTypeException;
 import com.zippycustomer.service.customer.exceptions.UserAccountAlreadyActivatedException;
 import com.zippycustomer.service.customer.exceptions.UserAccountNotFoundException;
-import com.zippycustomer.utils.ZippyConstants;
 import com.zippycustomer.utils.CustomerRegistrationFormValidator;
 import com.zippycustomer.utils.UserAccountValidatorUtils;
+import com.zippycustomer.utils.ZippyConstants;
 
 
 @Controller
@@ -52,7 +53,7 @@ public class CustomerController implements ZippyConstants{
 		logger.info("register form has been showed");
 		return "register-customer";
 	}
-
+	
 	@PostMapping("/register")
 	public String registerCustomer(
 			@ModelAttribute("customerRegistrationForm") @Valid CustomerRegistrationForm form,
@@ -61,6 +62,7 @@ public class CustomerController implements ZippyConstants{
 		AddressDto addressDto = null;
 		UserAccountDto userAccountDto = null;
 		VerifyOtpCodeForm verifyOtpCodeForm = null;
+		List<AddressDto> addressDtos = null;
 		
 
 		logger.info("customerRegistration form has been updated , not @city only with city error with class danger");
@@ -106,6 +108,7 @@ public class CustomerController implements ZippyConstants{
 		 * Here create the AddressDto object
 		 */
 		addressDto = new AddressDto();
+		addressDto.setFullName(form.getFirstName()+ " "+ form.getLastName());
 		addressDto.setAddressLine1(form.getAddressLine1());
 		addressDto.setAddressLine2(form.getAddressLine2());
 		addressDto.setCity(form.getCity());
@@ -122,7 +125,11 @@ public class CustomerController implements ZippyConstants{
 		userAccountDto.setEmailAddress(form.getEmailAddress());
 		userAccountDto.setPassword(form.getPassword());
 		userAccountDto.setMobileNo(form.getMobileNo());
-		userAccountDto.setAddressDto(addressDto);
+		
+		addressDtos = new ArrayList<AddressDto>();
+		addressDtos.add(addressDto);
+		
+		userAccountDto.setAddressDtos(addressDtos);
 		
 		logger.info("calling the rest api registercuster");
 		long userAccountId = userAccountApiService.registerCustomer(userAccountDto);
@@ -231,5 +238,24 @@ public class CustomerController implements ZippyConstants{
 		}else {
 			return "verification-success"; 
 		}
+	}
+	
+	@PostMapping("/doLogin")
+	public String doLogin(String emailAddress) {
+		logger.info("inside the customerController");
+		UserAccountDto userAccountDto = null;
+		/**
+		 * check whether the user exits or not
+		 */
+		try {
+			userAccountDto = this.userAccountApiService.getUserAccountDto(emailAddress);
+			/**
+			 * TODO complete the process , it is uncomplete
+			 */
+			logger.info("do your login, the implementation of the method is not completed , please complete it");																																																																			
+		} catch (UserAccountNotFoundException e) {
+			logger.info("error occured as the user account not found");
+		}
+		return "home";
 	}
 }

@@ -1,4 +1,4 @@
-package com.zippycustomer.usergmtservice.feign.config;
+package com.zippycustomer.usergmtservice.feign.config.customer;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zippycustomer.service.customer.dto.ErrorInfoDto;
+import com.zippycustomer.dto.customer.ErrorInfoDto;
 import com.zippycustomer.service.customer.exceptions.OtpAlreadyVerifiedException;
 import com.zippycustomer.service.customer.exceptions.OtpMismatchException;
 import com.zippycustomer.service.customer.exceptions.UnknownVerificationTypeException;

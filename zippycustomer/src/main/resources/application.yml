@@ -5,7 +5,13 @@ spring:
     static-path-pattern: /static/**
   messages:
     basename: errors
+  application:
+    name: zippycustomer
 usermgmtservice:
   apiUrl: http://localhost:9090
+  apiKey: zippyuser
+  apiPassword: welcome1
+partnerstoreservice:
+  apiUrl: http://localhost:9091
   apiKey: zippyuser
   apiPassword: welcome1
