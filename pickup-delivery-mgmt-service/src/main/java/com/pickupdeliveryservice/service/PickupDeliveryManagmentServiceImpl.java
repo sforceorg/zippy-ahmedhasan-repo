@@ -20,6 +20,7 @@ public class PickupDeliveryManagmentServiceImpl implements PickupDeliveryManagme
 
 	@Override
 	public List<PackageTypeDto> getPackageTypes() {
+		System.out.println("getPackageTypes>>>>>>>>>>>>>>>>>");
 		return this.packageTypeRepository.findAll().stream().map((packageType) -> {
 			PackageTypeDto packageTypeDto = null;
 			packageTypeDto = new PackageTypeDto();

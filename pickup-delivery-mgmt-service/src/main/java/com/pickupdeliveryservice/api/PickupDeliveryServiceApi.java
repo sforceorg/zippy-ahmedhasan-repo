@@ -24,6 +24,7 @@ public class PickupDeliveryServiceApi {
 
 	@GetMapping("/packages")
 	public ResponseEntity<List<PackageTypeDto>> getPackageTypes() {
+		System.out.println("calling the getPackageTypes>>>>>>>>>>>>>>>");
 		return ResponseEntity.ok(this.pickupDeliveryManagmentService.getPackageTypes());
 	}
 }
