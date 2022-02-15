@@ -8,6 +8,8 @@ import lombok.Setter;
 @Getter
 @EqualsAndHashCode
 public class AddressDto {
+	private long addressId;
+	private String fullName;
 	private String addressLine1;
 	private String addressLine2;
 	private String city;

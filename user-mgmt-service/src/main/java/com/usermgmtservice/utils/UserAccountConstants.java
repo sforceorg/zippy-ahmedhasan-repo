@@ -2,6 +2,7 @@ package com.usermgmtservice.utils;
 
 public interface UserAccountConstants {
 	 String USER_SYSTEM = "system";
+	 String USER_CUSTOMER  = "CUSTOMER";
 	 int EMAIL_VERIFICATION_OTP_CODE_LENGTH = 12;
 	 int MOBILE_VERIFICATION_OTP_CODE_LENGTH = 6;
 	 String REGISTERED_USER_STATUS = "R";

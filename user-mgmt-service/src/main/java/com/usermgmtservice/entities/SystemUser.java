@@ -2,22 +2,33 @@ package com.usermgmtservice.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table
-@Data
-public class SystemUser implements Serializable{
+@Setter
+@Getter
+@ToString
+public class SystemUser implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5428342679612931629L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "system_user_id")
@@ -31,7 +42,6 @@ public class SystemUser implements Serializable{
 	@Column(name = "last_nm")
 	protected String lastName;
 	protected String password;
-
 	@Column(name = "email_verification_otp_code")
 	protected String emailVerificationOtpCode;
 	@Column(name = "mobile_nbr_otp_code")
@@ -40,16 +50,16 @@ public class SystemUser implements Serializable{
 	protected Date emailVerificationOtpCodeGeneratedDate;
 	@Column(name = "mobile_nbr_otp_code_generated_dt")
 	protected Date mobileNoOtpCodeGeneratedDate;
-	@Column(name = "mobile_otp_verification_code_cerified_status")
-	protected int mobileOtpVerificationCodeVerifiedStatus;
-	@Column(name="email_verification_code_verified_status")
-	protected int emailVerificationCodeVerifiedStatus;
+	@Column(name = "mobile_nbr_otp_code_verified_status")
+	protected int mobileNoOtpCodeVerifiedStatus;
+	@Column(name = "email_verification_otp_code_verified_status")
+	protected int emailVerificationOtpCodeVerifiedStatus;
 	protected String status;
 	@Column(name = "registered_dt")
 	protected Date registeredDate;
 	@Column(name = "activated_dt")
 	protected Date activatedDate;
-
+	
 	@Column(name = "created_by")
 	protected String createdBy;
 	@Column(name = "created_dt")
@@ -60,10 +70,10 @@ public class SystemUser implements Serializable{
 	protected Date lastModifiedDate;
 
 	@ManyToOne
-	@JoinColumn(name = "address_id")
-	protected Address address;
-	@ManyToOne
 	@JoinColumn(name = "user_role_id")
 	protected UserRole userRole;
+
+	@OneToMany(mappedBy = "systemUser", fetch = FetchType.LAZY)
+	protected Set<Address> addresses;
 
 }

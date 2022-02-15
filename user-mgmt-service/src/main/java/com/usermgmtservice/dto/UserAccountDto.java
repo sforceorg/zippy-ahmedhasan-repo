@@ -1,4 +1,5 @@
 package com.usermgmtservice.dto;
+import java.util.List;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class UserAccountDto {
 	private String emailAddress;
 	private String mobileNo;
 	private String password;
-	private AddressDto addressDto;
+	private List<AddressDto> addressDtos;
+	private UserRoleDto userRoleDto;
 
 }

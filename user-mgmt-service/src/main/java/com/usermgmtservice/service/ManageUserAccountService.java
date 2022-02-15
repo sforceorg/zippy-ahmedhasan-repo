@@ -20,4 +20,5 @@ public interface ManageUserAccountService {
 			UserAccountAlreadyActivatedException, OtpAlreadyVerifiedException, UnknownVerificationTypeException;
 	
 	public UserAccountDto getUserAccount(long userAccountId);
+	public UserAccountDto getUserAccount(String emailAddress) throws UserAccountNotFoundException;
 }

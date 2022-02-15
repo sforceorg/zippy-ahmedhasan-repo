@@ -84,8 +84,13 @@ public class UserAccountApiService {
 	 * @param emailAddress
 	 * @return
 	 */
+	/**
+	 * TODO rename the method name it should get the count by email address
+	 * 
+	 */
 	@GetMapping(value = "/count/emailAddress", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Long> getUserAccountByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
+		System.out.println("calling getuserAccountByEmailAddress>>>>>>>>");
 		return ResponseEntity.ok(this.manageUserAccountService.countUserAccountByEmailAddress(emailAddress));
 	}
 
@@ -96,15 +101,29 @@ public class UserAccountApiService {
 	 * @param mobileNo
 	 * @return
 	 */
+	/**
+	 * TODO rename the method name it should get the count by mobile no
+	 * 
+	 */
 	@GetMapping(value = "/count/mobileNo", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Long> getUserAccountByMobileNo(String mobileNo) {
+	public ResponseEntity<Long> getUserAccountByMobileNo(@RequestParam("mobileNo") String mobileNo) {
 		return ResponseEntity.ok(this.manageUserAccountService.countUserAccountByMobileNo(mobileNo));
 	}
 
-	/**
-	 * TODO We are handling the exceptions here, however it is highly recommended to
-	 * replace them with global handler in separate class
-	 */
+	@GetMapping(value = "/{userAccountId}" , produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<UserAccountDto> getUserAccount(@PathVariable("userAccountId") long userAccountId){
+		return ResponseEntity.ok(this.manageUserAccountService.getUserAccount(userAccountId));
+	}
+	
+	@GetMapping(value = "/email/{emailAddress}" , produces = {MediaType.APPLICATION_JSON_VALUE})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = HTTP_STATUS_NOT_FOUND, content = {
+					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) })})
+	public ResponseEntity<UserAccountDto> getUserAccount(@PathVariable("emailAddress") String emailAddress) throws UserAccountNotFoundException{
+		return ResponseEntity.ok(this.manageUserAccountService.getUserAccount(emailAddress));
+	}
+	
+	
 
 	@PostMapping(value = "/verify/{accountId}/{verificationCode}/{verificationType}")
 	@ApiResponses(value = {
@@ -130,6 +149,10 @@ public class UserAccountApiService {
 				verificationCode, verificationType));
 	}
 
+	/**
+	 * TODO We are handling the exceptions here, however it is highly recommended to
+	 * replace them with global handler in separate class
+	 */
 	@ExceptionHandler(UserAccountNotFoundException.class)
 	public ResponseEntity<ErrorInfoDto> handleUserAccountNotFoundException(UserAccountNotFoundException e) {
 		System.out.println("handleUserAccountNotFoundException has been called");
@@ -170,8 +193,5 @@ public class UserAccountApiService {
 	 * ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); }
 	 */
 	
-	@GetMapping(value = "/{userAccountId}" , produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<UserAccountDto> getUserAccount(@PathVariable("userAccountId") long userAccountId){
-		return ResponseEntity.ok(this.manageUserAccountService.getUserAccount(userAccountId));
-	}
+	
 }

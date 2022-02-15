@@ -1,6 +1,7 @@
 package com.usermgmtservice.repositories;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,8 +15,10 @@ public interface SystemUserRepository extends JpaRepository<SystemUser, Long> {
 	public long countByMobileNo(String mobileNo);
 
 	@Modifying
-	@Query("update SystemUser su set su.status=?2, su.mobileOtpVerificationCodeVerifiedStatus=?3, su.emailVerificationCodeVerifiedStatus=?4, su.lastModifiedDate = ?5 ,su.activatedDate = ?6 where su.systemUserId = ?1")
+	@Query("update SystemUser su set su.status=?2, su.mobileNoOtpCodeVerifiedStatus=?3, su.emailVerificationOtpCodeVerifiedStatus=?4, su.lastModifiedDate = ?5 ,su.activatedDate = ?6 where su.systemUserId = ?1")
 	public int update(long systemUserId, String status, int otpVerificationCodeVerifiedStatus,
 			int emailVerificationCodeVerifiedStatus, Date lastModifiedDate, Date activatedDate);
+	
+	public Optional<SystemUser> findByEmailAddress(String emailAddress);
 
 }

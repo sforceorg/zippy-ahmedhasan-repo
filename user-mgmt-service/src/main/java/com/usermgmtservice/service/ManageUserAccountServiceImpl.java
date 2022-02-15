@@ -1,17 +1,16 @@
 package com.usermgmtservice.service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.usermgmtservice.dto.AddressDto;
 import com.usermgmtservice.dto.UserAccountActivationStatusDto;
@@ -30,6 +29,7 @@ import com.usermgmtservice.repositories.UserRoleRepository;
 import com.usermgmtservice.utils.Mapper;
 import com.usermgmtservice.utils.RandomGenerator;
 import com.usermgmtservice.utils.UserAccountConstants;
+
 
 /**
  * @author ahmed
@@ -57,6 +57,7 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 
 		UserRole userRole = null;
 		AddressDto addressDto = null;
+		Set<Address> addresses = null;
 		Address address = null;
 		SystemUser systemUser = null;
 		Date today = null;
@@ -65,26 +66,14 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		 */
 		today = new Date();
 		
-		logger.info("Getting the user role name: {}" ,USER_SYSTEM);
-		userRole = this.userRoleRepository.findUserRoleByRoleNameLike(USER_SYSTEM);
+		logger.info("Getting the user role name: {}" ,USER_CUSTOMER);
+		userRole = this.userRoleRepository.findUserRoleByRoleNameLike(USER_CUSTOMER);
 		logger.debug("User role name {} has user role id {}", userRole.getRoleName(), userRole.getUserRoleId());
 
-		/**
-		 * 2. Create Address object and insert into db
-		 */
-		addressDto = customerDto.getAddressDto();
-		address = Mapper.mapAddressDtoToAddress(addressDto);
-		address.setCreatedBy(USER_SYSTEM);
-		address.setCreatedDate(today);
-		address.setLastModifiedBy(USER_SYSTEM);
-		address.setLastModifiedDate(today);
 		
-		logger.info("Saving the address into address table");
-		address = this.addressRepository.save(address);
-		logger.debug("The address has been successfully saved with address_id {}", address.getAddressId());
 
 		/**
-		 * 3. Create System User and insert it into db
+		 * 2. Create System User and insert it into db
 		 */
 		systemUser = new SystemUser();
 		systemUser = Mapper.mapCustomerDtoToSystemUser(customerDto);
@@ -105,13 +94,35 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		systemUser.setLastModifiedBy(USER_SYSTEM);
 		systemUser.setLastModifiedDate(today);
 		systemUser.setStatus(REGISTERED_USER_STATUS);
-		systemUser.setAddress(address);
+		//systemUser.setAddress(address);
 		systemUser.setUserRole(userRole);
 		
 		logger.info("Saving the customer with firstName {}, and lastName {}", systemUser.getFirstName(),
 				systemUser.getLastName());
 		systemUser = this.systemUserRepository.save(systemUser);
 		logger.debug("Customer user has been saved successfuly with system_user_id {} ", systemUser.getSystemUserId());
+		
+		/**
+		 * 3. Create Address object and insert into db
+		 */
+		//addressDto = customerDto.getAddressDto();
+		addresses = new HashSet<>();
+		
+		for(AddressDto addressDtoNew : customerDto.getAddressDtos()) {
+			address = Mapper.mapAddressDtoToAddress(addressDtoNew);
+			address.setCreatedBy(USER_SYSTEM);
+			address.setCreatedDate(today);
+			address.setLastModifiedBy(USER_SYSTEM);
+			address.setLastModifiedDate(today);
+			address.setSystemUser(systemUser);
+			addresses.add(address);
+		}
+		
+		
+		logger.info("Saving the address into address table");
+		this.addressRepository.saveAll(addresses);
+		logger.debug("The address has been successfully saved with address_id {}", address.getAddressId());
+		
 		return systemUser.getSystemUserId();
 	}
 
@@ -159,13 +170,13 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		
 		userAccountActivationStatusDto = new UserAccountActivationStatusDto();
 		userAccountActivationStatusDto.setSystemUserId(systemUser.getSystemUserId());
-		userAccountActivationStatusDto.setMobileOtpVerificationCodeVerifiedStatus(systemUser.getMobileOtpVerificationCodeVerifiedStatus());
-		userAccountActivationStatusDto.setEmailVerificationCodeVerifiedStatus(systemUser.getEmailVerificationCodeVerifiedStatus());
+		userAccountActivationStatusDto.setMobileOtpVerificationCodeVerifiedStatus(systemUser.getMobileNoOtpCodeVerifiedStatus());
+		userAccountActivationStatusDto.setEmailVerificationCodeVerifiedStatus(systemUser.getEmailVerificationOtpCodeVerifiedStatus());
 		userAccountActivationStatusDto.setStatus(systemUser.getStatus());
 		
 		if (verificationType.equals(MOBILE_VERIFICATION_TYPE)) {
 			logger.info("Mobile Verification type");
-			if(systemUser.getMobileOtpVerificationCodeVerifiedStatus()==VERIFIED_STATUS) {
+			if(systemUser.getMobileNoOtpCodeVerifiedStatus()==VERIFIED_STATUS) {
 				throw new OtpAlreadyVerifiedException(ERROR_CODE_OTP_ALREADY_VERIFIED,"Otp already verified");
 			}
 			if (!(systemUser.getMobileNoOtpCode().equals(verifcationCode))){
@@ -173,14 +184,14 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 			}else {
 				logger.info("the mobile verification matched");
 				userAccountActivationStatusDto.setMobileOtpVerificationCodeVerifiedStatus(VERIFIED_STATUS);
-				if(systemUser.getEmailVerificationCodeVerifiedStatus()==VERIFIED_STATUS) {
+				if(systemUser.getEmailVerificationOtpCodeVerifiedStatus()==VERIFIED_STATUS) {
 					userAccountActivationStatusDto.setStatus(ACTIVE_USER_STATUS);
 					activatedDate = new Date();
 				}
 			}
 		} else {
 			logger.info("Email Verification type");
-			if(systemUser.getEmailVerificationCodeVerifiedStatus()==VERIFIED_STATUS) {
+			if(systemUser.getEmailVerificationOtpCodeVerifiedStatus()==VERIFIED_STATUS) {
 				throw new OtpAlreadyVerifiedException(ERROR_CODE_OTP_ALREADY_VERIFIED,"Otp already verified");
 			}
 			if (!(systemUser.getEmailVerificationOtpCode().equals(verifcationCode))){
@@ -188,7 +199,7 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 			}else {
 				logger.info("the email verification matched");
 				userAccountActivationStatusDto.setEmailVerificationCodeVerifiedStatus(VERIFIED_STATUS);
-				if(systemUser.getMobileOtpVerificationCodeVerifiedStatus()==VERIFIED_STATUS) {
+				if(systemUser.getMobileNoOtpCodeVerifiedStatus()==VERIFIED_STATUS) {
 					userAccountActivationStatusDto.setStatus(ACTIVE_USER_STATUS);
 					activatedDate = new Date();
 				}
@@ -205,10 +216,28 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 
 
 	@Override
-	public UserAccountDto getUserAccount(@PathVariable long userAccountId) {
+	public UserAccountDto getUserAccount(long userAccountId) {
 		SystemUser systemUser = null;
 		UserAccountDto userAccountDto = null;
 		systemUser = this.systemUserRepository.getById(userAccountId);
+		userAccountDto = Mapper.mapSystemUserToUserAccountDto(systemUser);
+		return userAccountDto;
+	}
+
+
+	@Override
+	public UserAccountDto getUserAccount(String emailAddress) throws UserAccountNotFoundException {
+		Optional<SystemUser> systemUserOptional = null;
+		SystemUser systemUser = null;
+		UserAccountDto userAccountDto = null;
+		UserRole userRole = null;
+		
+		systemUserOptional = this.systemUserRepository.findByEmailAddress(emailAddress);
+		if(systemUserOptional.isEmpty()) {
+			throw new UserAccountNotFoundException(ERROR_CODE_ACCOUNT_NOT_FOUND,"user account not found");
+		}
+		systemUser= systemUserOptional.get();
+		
 		userAccountDto = Mapper.mapSystemUserToUserAccountDto(systemUser);
 		return userAccountDto;
 	}

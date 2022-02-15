@@ -20,7 +20,7 @@ public class RandomGenerator {
 
 		code = new StringBuilder();
 		for (int i = 0; i < length; i++) {
-			int random = new SecureRandom().nextInt(72);
+			int random = new SecureRandom().nextInt(ALPHA_NUMERIC_SPECIAL_CHARACTERS.length);
 			code.append(ALPHA_NUMERIC_SPECIAL_CHARACTERS[random]);
 
 		}
@@ -35,7 +35,7 @@ public class RandomGenerator {
 
 		code = new StringBuilder();
 		for (int i = 0; i < length; i++) {
-			int random = new SecureRandom().nextInt(10);
+			int random = new SecureRandom().nextInt(NUMERIC.length);
 			code.append(NUMERIC[random]);
 
 		}

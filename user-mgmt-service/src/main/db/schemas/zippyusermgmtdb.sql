@@ -26,17 +26,22 @@ DROP TABLE IF EXISTS `address`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `address` (
   `address_id` bigint NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(50) NOT NULL,
   `address_line1` varchar(100) NOT NULL,
   `address_line2` varchar(100) DEFAULT NULL,
   `city` varchar(50) NOT NULL,
   `state` varchar(50) NOT NULL,
   `zip` int NOT NULL,
   `country` varchar(50) NOT NULL,
+  `system_user_id` bigint NOT NULL,
   `created_by` varchar(50) NOT NULL,
   `created_dt` datetime NOT NULL,
   `last_modified_by` varchar(50) NOT NULL,
   `last_modified_dt` datetime NOT NULL,
-  PRIMARY KEY (`address_id`)
+  PRIMARY KEY (`address_id`),
+    KEY `address
+_idx` (`address_id`),
+  CONSTRAINT `address` FOREIGN KEY (`system_user_id`) REFERENCES `system_user` (`system_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -58,8 +63,9 @@ CREATE TABLE `system_user` (
   `mobile_nbr_otp_code` varchar(6) NOT NULL,
   `email_verification_otp_code_generated_dt` datetime NOT NULL,
   `mobile_nbr_otp_code_generated_dt` datetime NOT NULL,
+  `mobile_nbr_otp_code_verified_status` int,
+  `email_verification_otp_code_verified_status` int,
   `user_role_id` bigint NOT NULL,
-  `address_id` bigint NOT NULL,
   `status` varchar(1) NOT NULL,
   `registered_dt` datetime NOT NULL,
   `activated_dt` datetime,
@@ -67,15 +73,10 @@ CREATE TABLE `system_user` (
   `created_dt` datetime NOT NULL,
   `last_modified_by` varchar(50) NOT NULL,
   `last_modified_dt` datetime NOT NULL,
-  `mobile_otp_verification_code_cerified_status` tinyint(1) NOT NULL DEFAULT b'0',
-  `email_verification_code_verified_status` tinyint(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`system_user_id`),
   UNIQUE KEY `email_address_UNIQUE` (`email_address`),
   UNIQUE KEY `mobile_nbr_UNIQUE` (`mobile_nbr`),
   KEY `user_role_idx` (`user_role_id`),
-  KEY `address
-_idx` (`address_id`),
-  CONSTRAINT `address` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`),
   CONSTRAINT `user_role` FOREIGN KEY (`user_role_id`) REFERENCES `user_role` (`user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
