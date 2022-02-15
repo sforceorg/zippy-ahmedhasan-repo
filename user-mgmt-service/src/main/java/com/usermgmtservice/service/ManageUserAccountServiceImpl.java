@@ -2,6 +2,7 @@ package com.usermgmtservice.service;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -56,7 +57,6 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 	public long registerCustomer(UserAccountDto customerDto) {
 
 		UserRole userRole = null;
-		AddressDto addressDto = null;
 		Set<Address> addresses = null;
 		Address address = null;
 		SystemUser systemUser = null;
@@ -231,6 +231,9 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		SystemUser systemUser = null;
 		UserAccountDto userAccountDto = null;
 		UserRole userRole = null;
+		List<Address> addresses = null;
+		
+		logger.info("getUserAccount using the email address");
 		
 		systemUserOptional = this.systemUserRepository.findByEmailAddress(emailAddress);
 		if(systemUserOptional.isEmpty()) {
@@ -239,6 +242,9 @@ public class ManageUserAccountServiceImpl implements ManageUserAccountService, U
 		systemUser= systemUserOptional.get();
 		
 		userAccountDto = Mapper.mapSystemUserToUserAccountDto(systemUser);
+		addresses = this.addressRepository.findBySystemUser(systemUser.getSystemUserId());
+		userAccountDto.setAddressDtos(Mapper.mapAddressesToAddressDtos(addresses));
+		
 		return userAccountDto;
 	}
 }

@@ -1,5 +1,7 @@
 package com.usermgmtservice.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,6 +55,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/account")
 public class UserAccountApiService {
+	
+	private Logger logger = LoggerFactory.getLogger(UserAccountApiService.class); 
 
 	private static final String APPLICATION_JSON_MEDIA_TYPE = "application/json";
 	private static final String HTTP_STATUS_NOT_FOUND = "404";
@@ -62,6 +66,7 @@ public class UserAccountApiService {
 	private static final String HTTP_STATUS_NOT_ACCEPTABLE = "406";
 	private static final String HTTP_STATUS_OK_SUCCESS= "200";
 
+	
 	@Autowired
 	private ManageUserAccountService manageUserAccountService;
 
@@ -90,7 +95,7 @@ public class UserAccountApiService {
 	 */
 	@GetMapping(value = "/count/emailAddress", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Long> getUserAccountByEmailAddress(@RequestParam("emailAddress") String emailAddress) {
-		System.out.println("calling getuserAccountByEmailAddress>>>>>>>>");
+		logger.info("calling getUserAccountByEmailAddress return logn");
 		return ResponseEntity.ok(this.manageUserAccountService.countUserAccountByEmailAddress(emailAddress));
 	}
 
@@ -107,11 +112,13 @@ public class UserAccountApiService {
 	 */
 	@GetMapping(value = "/count/mobileNo", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Long> getUserAccountByMobileNo(@RequestParam("mobileNo") String mobileNo) {
+		logger.info("calling getUserAccountByMobileNo return long");
 		return ResponseEntity.ok(this.manageUserAccountService.countUserAccountByMobileNo(mobileNo));
 	}
 
 	@GetMapping(value = "/{userAccountId}" , produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<UserAccountDto> getUserAccount(@PathVariable("userAccountId") long userAccountId){
+		logger.info("calling getUserAccount consumes long return long");
 		return ResponseEntity.ok(this.manageUserAccountService.getUserAccount(userAccountId));
 	}
 	
@@ -120,6 +127,7 @@ public class UserAccountApiService {
 			@ApiResponse(responseCode = HTTP_STATUS_NOT_FOUND, content = {
 					@Content(mediaType = APPLICATION_JSON_MEDIA_TYPE, schema = @Schema(allOf = { ErrorInfoDto.class })) })})
 	public ResponseEntity<UserAccountDto> getUserAccount(@PathVariable("emailAddress") String emailAddress) throws UserAccountNotFoundException{
+		logger.info("calling getUserAccount pathparam email address return userAccountDto");
 		return ResponseEntity.ok(this.manageUserAccountService.getUserAccount(emailAddress));
 	}
 	
@@ -144,7 +152,7 @@ public class UserAccountApiService {
 			@PathVariable("verificationType") String verificationType)
 			throws UserAccountNotFoundException, OtpMismatchException, UserAccountAlreadyActivatedException,
 			OtpAlreadyVerifiedException, UnknownVerificationTypeException {
-		
+		logger.info("calling verifyOtpAndUpdateAccountStatus");
 		return ResponseEntity.ok(this.manageUserAccountService.verifyOtpAndUpdateAccountStatus(accountId,
 				verificationCode, verificationType));
 	}
